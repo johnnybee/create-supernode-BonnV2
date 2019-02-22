@@ -36,13 +36,13 @@
 
     - role: fastd
       fbmxbone_ipv4_internal: <insert a free private ipv4-adress here for connecting to the backbone>
-      fastd_privatekey: <insert your fastd-privatekey>
+      fastd_privatekey: <insert your fastd-privatekey for the node connection>
 
     - role: wireguard
       wireguard_privatekey_nodes: <insert your wireguard privatekey for the node connection>
       wireguard_privatekey_backbone: <insert your wireguard privatekey for the backend between the supernodes>
       wireguard_nginx_port: <port 80 or 443. If you use 443, the port must be reachable from the internet to generate a lets encrypt certificate! If you insert port 80, some proxy in front must handle 
-the  https connection>
+the  https request>
 
     - role: openvpn
       openvpn_clientname: <the username for pia https://www.privateinternetaccess.com/>
