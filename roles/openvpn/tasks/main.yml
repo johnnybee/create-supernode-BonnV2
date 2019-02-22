@@ -1,0 +1,48 @@
+---
+# tasks file for openvpn
+
+- name: Update repositories on hosts
+  apt:
+    update_cache: yes
+
+- name: install openvpn
+  package:
+    name: openvpn
+    state: latest
+
+- name: copy openvpn files
+  copy:
+    src: "etc/openvpn/"
+    dest: "/etc/openvpn"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: configure vpn login file
+  template:
+    src: "pia-login.pass.j2"
+    dest: /etc/openvpn/pia-login.pass
+    owner: root
+    group: root
+    mode: 0644
+
+
+- name: change executable byte for files
+  file:
+    path: '/etc/openvpn/{{ item }}'
+    owner: root
+    group: root
+    mode: 0744
+  with_items:
+    - 'up.sh'
+    - 'down.sh'
+
+- name: Add a cronjob to reconnect to the hopefully fastest VPN server at night
+  cron:
+    name: "reconnect openvpn to (hopefully) connect to the fastest server"
+    minute: 10
+    hour: 3
+    job="/etc/init.d/openvpn restart"
+    state: present
+    user: root
+

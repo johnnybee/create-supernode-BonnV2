@@ -1,0 +1,27 @@
+option domain-name "bn.ffkbu";
+option domain-search "bn.ffkbu";
+option domain-name-servers {{ network_ipv4 }}.1;
+option ntp-servers {{ network_ipv4 }}.1;
+
+ignore client-updates;
+update-static-leases on;
+
+default-lease-time 3600;        #1 Stunde
+max-lease-time 3600;            #1 Stunde
+authoritative;
+
+subnet 10.70.0.0 netmask 255.255.0.0 {
+# speed up ip assignment if gateway is switched
+  pool {
+    range {{ dhcpd_ipv4_blockstart1 }} {{ dhcpd_ipv4_blockend1 }};    
+    deny all clients;
+  }
+  pool {
+    range {{ dhcpd_ipv4_blockstart2 }} {{ dhcpd_ipv4_blockend2 }};
+    deny all clients;
+  }
+  # if using a /24 then the range goes from .10 to .254
+  range {{ network_ipv4 }}.10 {{ dhcpd_ipv4_max }};
+        option routers {{ network_ipv4 }}.1;
+        option interface-mtu 1332;
+}

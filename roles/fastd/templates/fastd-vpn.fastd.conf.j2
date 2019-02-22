@@ -1,0 +1,26 @@
+bind {{ ansible_default_ipv4.address }} port 10040;
+
+drop capabilities yes;
+forward no;
+hide ip addresses yes;
+hide mac addresses yes;
+
+interface "fastd-vpn";
+
+log to syslog level info;
+
+method "salsa2012+umac";
+mode tap;
+mtu 1398;
+
+on up sync "./on-up";
+on verify "
+/etc/fastd/fastd-blacklist.sh $PEER_KEY
+";
+pmtu auto;
+
+secret "{{ fastd_privatekey }}";
+secure handshakes yes;
+
+status socket "/var/log/fastd_status_vpn";
+

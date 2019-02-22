@@ -1,0 +1,36 @@
+#!/bin/sh
+
+
+#wir haengen nur die Bridge in bat0, da batman nur begrenzte Mengen an Interfaces vertraegt.
+/sbin/brctl addbr wireguard-bb
+/sbin/ip link set dev wireguard-bb up
+/usr/local/sbin/batctl if add  wireguard-bb
+
+#Port isolation bridge
+ebtables --append FORWARD --logical-in wireguard-bb --jump DROP
+
+#Bonn1
+#/sbin/ip link add gre-bonn1 type gretap remote 10.35.0.1 local 10.35.0.{{ servernummer }}
+#/sbin/ip link set up dev gre-bonn1
+#/sbin/brctl addif wireguard-bb gre-bonn1
+
+#Bonn2
+/sbin/ip link add gre-bonn2 type gretap remote 10.35.0.2 local 10.35.0.{{ servernummer }}
+/sbin/ip link set up dev gre-bonn2
+/sbin/brctl addif wireguard-bb gre-bonn2
+
+#Bonn3
+/sbin/ip link add gre-bonn3 type gretap remote 10.35.0.3 local 10.35.0.{{ servernummer }}
+/sbin/ip link set up dev gre-bonn3
+/sbin/brctl addif wireguard-bb gre-bonn3
+
+#Bonn4
+#/sbin/ip link add gre-bonn4 type gretap remote 10.35.0.4 local 10.35.0.{{ servernummer }}
+#/sbin/ip link set up dev gre-bonn4
+#/sbin/brctl addif wireguard-bb gre-bonn4
+
+#Bonn5
+#/sbin/ip link add gre-bonn5 type gretap remote 10.35.0.5 local 10.35.0.{{ servernummer }}
+#/sbin/ip link set up dev gre-bonn5
+#/sbin/brctl addif wireguard-bb gre-bonn5
+

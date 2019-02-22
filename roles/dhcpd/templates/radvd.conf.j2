@@ -1,0 +1,13 @@
+interface br-ffintern {
+        AdvSendAdvert on;
+        AdvOtherConfigFlag on;
+        AdvManagedFlag on;
+
+        prefix fdd3:5d18:b5dd:fc00::/64 {
+                AdvAutonomous off;
+        };
+
+        prefix {{ network_ipv6_public }}/64 {
+                AdvAutonomous on;
+        };
+};

@@ -1,0 +1,19 @@
+#!/bin/sh
+#/sbin/ip link set dev fbmxbone address [MAC ADDY AUSDENKEN]
+/sbin/ip link set dev fbmxbone up
+ip addr add {{ fbmxbone_ipv4_internal }}/24 dev fbmxbone
+#iptables -A FORWARD -i bat+ -o fbmxbone -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+#iptables -A FORWARD -i fbmxbone -o bat+ -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -A FORWARD -i br-ffintern -o fbmxbone -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -A FORWARD -i fbmxbone -o br-ffintern -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+babeld  -C 'redistribute ip 2a03:2260:11e::/48 ge 48 metric 128' \
+        -C 'redistribute deny' \
+        -C 'redistribute local deny' \
+        fbmxbone -t 90 -T 90 -r -g 33123 -D -s
+
+ip -6 rule add from 2a03:2260:11e::/48 lookup freifunk
+ip -6 rule add to 2a03:2260:11e::/48 lookup freifunk
+ip addr add {{ network_ipv6_public }}10/64 dev br-ffintern
+ip -6 r add {{ network_ipv6_public }}/64 dev br-ffintern table freifunk proto static
+

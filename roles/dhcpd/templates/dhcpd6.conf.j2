@@ -1,0 +1,43 @@
+# The ddns-updates-style parameter controls whether or not the server will
+# attempt to do a DNS update when a lease is confirmed.
+ddns-update-style none;
+
+# Option definitions common to all supported networks...
+default-lease-time 43200; # 12 hours
+max-lease-time 43200; # 12 hours
+
+# This DHCP server is the official DHCP server for the local network
+authoritative;
+
+
+ddns-updates on;
+ddns-update-style interim;
+ddns-domainname "bn.ffkbu.";  #diese Domain wird dynamisch aktualisiert
+#ddns-rev-domainname "in-addr.arpa."; #Und das ganze Reverse
+ignore client-updates;
+update-static-leases on;
+
+
+
+key "bn.ffkbu_ddns_update" {
+        algorithm hmac-md5;
+        secret "dq35SWTzNT3luIwueQ8YFcs28F/2Au32stDyKlPVeURfl+JraGpqHLEqF8VSO+ZlWOHYZQLeBkzp4FS1SI8bkA==";
+};
+
+
+zone bn.ffkbu. {                        #Forward-Zone
+        primary 10.70.0.1;              #Der DNS-Server, der aktualisiert wird
+        key bn.ffkbu_ddns_update;
+}
+
+zone 0.0.c.f.d.d.5.b.8.1.d.5.3.d.d.f.ip6.arpa { #Und Reverse
+        primary 10.70.0.1;
+        key bn.ffkbu_ddns_update;
+}
+
+subnet6 fdd3:5d18:b5dd:fc00::/64 {
+        range6 {{ network_ipv6 }} {{ dhcpd_ipv6_max }};
+        option dhcp6.name-servers {{ network_ipv6 }}1;
+        option dhcp6.domain-search "bn.ffkbu";
+}
+

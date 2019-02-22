@@ -1,0 +1,51 @@
+---
+
+- hosts: all
+  vars:
+    servernummer: "1"
+    network_ipv4: "10.70.8"
+    network_ipv6: "fdd3:5d18:b5dd:fc00:1000::"
+    network_ipv6_public: "2a03:2260:11e:657::"
+  roles:
+    - role: geerlingguy.ntp
+      ntp_enabled: true
+      ntp_timezone: Europe/Berlin
+      ntp_manage_config: true
+      ntp_servers:
+        - 0.de.pool.ntp.org
+        - 1.de.pool.ntp.org
+        - 2.de.pool.ntp.org
+        - 3.de.pool.ntp.org
+      ntp_restrict:
+        - "127.0.0.1"
+        - "::1"
+
+    - role: batmancompile
+      batman_adv_number: 2019.0
+
+    - role: network
+    - role: bind
+    - role: dhcpd
+      dhcpd_ipv4_max: "10.70.15.254"
+      dhcpd_ipv6_max: "fdd3:5d18:b5dd:fc00:1fff:ffff:ffff:ffff"
+      # Which IPV4 Blocks should be ignored?
+      dhcpd_ipv4_blockstart1: "10.70.0.0"
+      dhcpd_ipv4_blockend1: "10.70.7.255"
+      dhcpd_ipv4_blockstart2: "10.70.16.0"
+      dhcpd_ipv4_blockend2: "10.70.255.255"
+
+    - role: fastd
+      fbmxbone_ipv4_internal: "192.168.68.17"
+      fastd_privatekey: <insert your fastd-privatekey>
+
+    - role: wireguard
+      wireguard_privatekey_nodes: <insert your wireguard privatekey for the node connection>
+      wireguard_privatekey_backbone: <insert your wireguard privatekey for the backend between the supernodes>
+      wireguard_nginx_port: <port 80 or 443. If you use 443, the port must be reachable from the internet to generate a lets encrypt certificate! If you insert port 80, some proxy in front must handle 
+the  https connection>
+
+    - role: openvpn
+      openvpn_clientname: <the username for pia https://www.privateinternetaccess.com/>
+      openvpn_clientpass: <your username for pia>
+
+

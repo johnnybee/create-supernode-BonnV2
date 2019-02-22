@@ -1,0 +1,117 @@
+{
+  "peers": 
+  [
+    {
+      "pubkey": "eebd5c0680f025e74a79fe6b1fbd7b8f747850e55b2b364679529a549ffcdbf2",
+      "comment": "2015-01-24 luki2 interconnecting to Rheinufer // CHRlS"
+    },
+    {
+      "pubkey": "418cbe17f3214abfaba7f23d67ea21ac0d521b19d0abc532e139bb7904187501",
+      "comment": "2015-01-31 FF-EN-SPR-VPN-MESH-Rathaus1-Uplink ARP ATTACK!? // CHRlS"
+    },
+    {
+      "pubkey": "5f4965072a034996589112e0101fcaa30360e8d36b22fd86f5d0512effd85286",
+      "comment": "2015-01-08 interconnecting CHRlS"
+    },
+    {
+      "pubkey": "13ffef2d2535c4d391a15e53303a4979e524d7c9e5473a7596b59899e950cf8d",
+      "comment": "2015-01-09 interconnecting CHRlS"
+    },
+    {
+      "pubkey": "7c89d35e3699fa6120e82cb7833cba5981976609c003385a13ad537b86a3cac4",
+      "comment": "2015-01-12 interconnecting CHRlS (Dorsten01?)"
+    },
+    {
+      "pubkey": "d05810068dfbe559463de2ba6cee861c3a910560f446c78fd4479f4a508e052d",
+      "comment": "2015-01-12 interconnecting CHRlS (FF-KLE-WZE-Heideweg_40)"
+    },
+    {
+      "pubkey": "fbcb5aa787f292bc3bb8be2a692560bf91dc5a74a213d37eca020f95081bd7a3",
+      "comment": "2015-01-12 interconnecting CHRlS"
+    },
+    {
+      "pubkey": "04a48826a533c93fb5ea065d59ae2c147e188ee4b585dbe6872155f61a35d955",
+      "comment": "2015-01-12 interconnecting CHRlS"
+    },
+    {
+      "pubkey": "be61af94689613e21f27d22efa068509f19f63254cfbe1200f7eccd95fce0f72",
+      "comment": "2015-01-20 interconnecting CHRlS"
+    },
+    {
+      "pubkey": "d05810068dfbe559463de2ba6cee861c3a910560f446c78fd4479f4a508e052d",
+      "comment": "Bridged communities! //CyrusFox"
+    },
+    {
+      "pubkey": "0a82c608203c1cc98d7e7d3bc1eb487b6dadb0d15c83829707635d6164a8dc2c",
+      "comment": "Broadcast Storm"
+    },
+    {
+      "pubkey": "8f227077eeac0f5add73c469f9f0bef8fdfa329e5fd0cfdc7215732b1e930de0",
+      "comment": "Broadcast Storm #2"
+    },
+    {
+      "pubkey": "f84e7ca6eb5ff3bf04e4d881ebc60d3def46b562a6470adfa36e84dd735f8e31",
+      "comment": "Broadcast Storm #3"
+    },
+    {
+      "pubkey": "2da06846d4813a4f2b222a9350a66d2ff6292be160685c80d0b3b1a066b4ec33",
+      "comment": "Broadcast Storm #4"
+    },
+    {
+      "pubkey": "99ab4ced932859cde18f7c7a94c98bd635f79cb3991e6bcedb2f63d96a01e17a",
+      "comment": "Broadcast Storm #5"
+    },
+    {
+      "pubkey": "26ed976f8c12999dace1d529dd1c0176ba1f92336b8929a7fb0229ba19ce55d5",
+      "comment": "Broadcast Storm #6"
+    },
+    {
+      "pubkey": "17ec678cb1ca77db20993001e290afa068fc824a54f7fe751259160073db3a7f",
+      "comment": "Broadcast Storm #7"
+    },
+    {
+      "pubkey": "085c4af980f6b8d4bf6d2c8d7b0641efa6129696cdd7a79346d7bb00ac8d73dd",
+      "comment": "Broadcast Storm #8"
+    },
+    {
+      "pubkey": "8f227077eeac0f5add73c469f9f0bef8fdfa329e5fd0cfdc7215732b1e930de0",
+      "comment": "Broadcast Storm #9"
+    },
+    {
+      "pubkey": "d7382ac395820316ef1d3674a525348b3616f0f72e062b756c8421423552b780",
+      "comment": "Broadcast Storm #10 MAC: 16:d0:20:ae:04:8c"
+    },
+    {
+      "pubkey": "dc5df238d43eeeb0b8a832d4eeeac43197397230643da90b1dda8fdb7a3688e3",
+      "comment": "fastd Tunnel through fastd Tunnel resulting in 70MBit Traffic to nowhere."
+    },
+    {
+      "pubkey": "22f4467c107a411d995d04f4e1cf58636bb5c59140bfe135fe3d7a72909cba19",
+      "comment": "Another fastd Tunnel through fastd Tunnel. Juel-Jeans-Planet-CPE"
+    },
+    {
+      "pubkey": "a8097e9407a0e57d62315af5192165837504e241f93167f9daab13586688e3a7",
+      "comment": "Bridge between Essen and EN"
+    },
+    {
+      "pubkey": "36b0d308ecc72ec75399726341fe6bd8c220261278b8bea548e784553f9059ce",
+      "comment": "Bridge between Dortmund/Essen/FFRGW FF-UN-Eintrachtstrasse-22"
+    },
+    {
+      "pubkey": "5dc154dba5343e9b8fd34c9910a4926f8ed4d7f0dddc387796b7fdb1e83f2b1c",
+      "comment": "Potential Brige Rheinufer-Aachen, see commit message/FF-DU-Volker-Herren"
+    },
+    {
+      "pubkey": "daa49912388dc9b7f2c2efaea3060c922d80398e8a65934671708f3d19930439",
+      "comment": "Potential Brige Rheinufer-Aachen, FF-DU-Volker-Herren again"
+    },
+    {
+      "pubkey": "a0034a43c559a7181e343196a741dbd6be9b7a9fce1b0a345151bb9ebbafe4d8",
+      "comment": "Potential Brige Moehne biggesee/soest| biggesse fw located soest"
+    },
+    {
+      "pubkey": "185180fc35dccf6335abd8de68cf3f13d4695e2400a53a3e1277295aae4b3736",
+      "comment": "Potential Brige Moehne biggesee/arnsberg| biggesse fw located arnsberg"
+    }
+  ]
+}

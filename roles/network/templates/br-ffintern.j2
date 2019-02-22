@@ -1,0 +1,14 @@
+auto br-ffintern
+iface br-ffintern inet static
+  address {{ network_ipv4 }}.1/16
+  bridge_ports bat0
+  bridge_fd 5
+  bridge_stp no
+  pre-up  modprobe batman-adv && tunctl -t fastd-vpn && batctl ra BATMAN_IV && batctl if add fastd-vpn
+  post-up ip rule add iif br-ffintern table freifunk
+  pre-down ip rule del iif br-ffintern table freifunk
+
+iface br-ffintern inet6 static
+  address {{ network_ipv6 }}1
+  netmask 64
+

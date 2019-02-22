@@ -1,0 +1,89 @@
+---
+# tasks file for openvpn
+
+- name: Update repositories on hosts
+  apt:
+    update_cache: yes
+
+- name: install packages to compile batman-adv
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - linux-headers-amd64
+    - build-essential 
+    - cmake 
+    - doxygen 
+    - bison 
+    - libcap-dev 
+    - libsodium-dev 
+    - libjson-c-dev 
+    - bridge-utils 
+    - xz-utils 
+    - wget 
+    - pkg-config 
+    - libnl-genl-3-dev 
+    - libnl-3-200  
+    - libnl-3-dev
+    - dkms
+    - linux-headers-{{ ansible_kernel }}
+
+- name: Downloading batman-adv sources
+  get_url:
+    url: "https://downloads.open-mesh.org/batman/stable/sources/batman-adv/batman-adv-{{ batman_adv_number }}.tar.gz"
+    dest: "/usr/src/batman-adv-{{ batman_adv_number }}.tar.gz"
+  register: batman_adv_source
+
+- name: Downloading batctl sources
+  get_url:
+    url: "https://downloads.open-mesh.org/batman/stable/sources/batctl/batctl-{{ batman_adv_number }}.tar.gz"
+    dest: "/usr/src/batctl-{{ batman_adv_number }}.tar.gz"
+  register: batctl_source
+
+- name: Unpacking batman-adv
+  unarchive:
+    copy: no
+    dest: /usr/src/
+    src: "/usr/src/batman-adv-{{ batman_adv_number }}.tar.gz"
+  when: batman_adv_source.changed
+  register: batman_adv_source_unpack
+
+- name: Unpacking batctl
+  unarchive:
+    copy: no
+    dest: /usr/src/
+    src: "/usr/src/batctl-{{ batman_adv_number }}.tar.gz"
+  when: batctl_source.changed
+  register: batctl_source_unpack
+
+- name: configure DKMS
+  template:
+    src: "dkms.conf.j2"
+    dest: /usr/src/batman-adv-{{ batman_adv_number }}/dkms.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: batman_adv_source_unpack.changed
+  register: batman_adv_dkms
+
+#- name: Installing Batman-adv 
+#  command: "dkms add -m batman-adv -v {{ batman_adv_number }} && dkms build -m batman-adv -v {{ batman_adv_number }} && dkms install -m batman-adv -v {{ batman_adv_number }}"
+#  args:
+##    chdir: "/usr/src/batman-adv-{{ batman_adv_number }}"
+#  when: batman_adv_dkms.changed
+
+- name: Installing Batman-adv
+  command: "{{ item }} chdir=/usr/src/batman-adv-{{ batman_adv_number }}/"
+  with_items:
+    - dkms add -m batman-adv -v {{ batman_adv_number }}
+    - dkms build -m batman-adv -v {{ batman_adv_number }}
+    - dkms install -m batman-adv -v {{ batman_adv_number }}
+  when: batman_adv_dkms.changed
+
+- name: Installing Batctl
+  command: "{{ item }} chdir=/usr/src/batctl-{{ batman_adv_number }}/"
+  with_items:
+    - /usr/bin/make
+    - /usr/bin/make install    
+  when: batctl_source.changed
+

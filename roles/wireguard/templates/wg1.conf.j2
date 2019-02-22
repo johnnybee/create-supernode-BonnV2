@@ -1,0 +1,35 @@
+[Interface]
+Address = 10.35.0.{{ servernummer }}/24
+ListenPort = 10030
+PrivateKey = {{ wireguard_privatekey_backbone }}
+PostUp = /etc/wireguard/backbone_on-up
+
+
+#[Peer]
+#PublicKey = 3Of0DQ4ed6yCoQsigzNmBcPOvfQlQS1p/WJ9ZUdLpWo=
+#AllowedIPs = 10.35.0.1/32
+#Endpoint = bonn1.kbu.freifunk.net:10030
+
+[Peer]
+PublicKey = floayiRf0XNO4vVVdsF7v+nTmx/sWXGXT/g8CmT0GSY=
+AllowedIPs = 10.35.0.2/32
+Endpoint = bonn2.kbu.freifunk.net:10030
+
+[Peer]
+PublicKey = lXjGuLcdpmZLYYDzD1+I9+bos8Ve/lyzkUm9zw69J1Y=
+AllowedIPs = 10.35.0.3/32
+Endpoint = bonn3.kbu.freifunk.net:10030
+
+#[Peer]
+#PublicKey = DZugupLCB2KeapzSjP+RhSdY3HOzUnJXrmMHHB32fgc=
+#AllowedIPs = 10.35.0.4/32
+#Endpoint = bonn4.kbu.freifunk.net:10030
+
+#[Peer]
+#PublicKey = IV5JpyxaMdEO8kn7Xj5NodDTznbQCmIBWdulrJiZmBw=
+#AllowedIPs = 10.35.0.5/32
+#Endpoint = bonn5.kbu.freifunk.net:10030
+
+
+
+

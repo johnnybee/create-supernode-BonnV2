@@ -1,0 +1,135 @@
+---
+# tasks file for wireguard
+
+
+# Add specified repository into sources list using specified filename.
+- name: Add wireguard repository to system
+  apt_repository:
+    repo: deb http://deb.debian.org/debian/ unstable main
+    state: present
+    filename: wireguard
+
+- name: Add pinning for the repository
+  copy:
+    dest: /etc/apt/preferences.d/limit-unstable
+    content: |
+      Package: *
+      Pin: release a=unstable
+      Pin-Priority: 90
+
+- name: Update repositories on hosts
+  apt:
+    update_cache: yes
+
+- name: install wireguard
+  package:
+    name: wireguard
+    state: latest
+
+- name: install ebtables
+  package:
+    name: ebtables
+    state: latest
+
+- name: copy wireguard files
+  copy:
+    src: "etc/wireguard/"
+    dest: "/etc/wireguard"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: configure wg0.conf
+  template:
+    src: "wg0.conf.j2"
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: configure wg1.conf
+  template:
+    src: "wg1.conf.j2"
+    dest: /etc/wireguard/wg1.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: change executable byte for files
+  file:
+    path: '/etc/wireguard/{{ item }}'
+    owner: root
+    group: root
+    mode: 0744
+  with_items:
+    - 'backbone_on-up'
+    - 'on-up'
+
+- name: enable wg0 and ensure it is not masked
+  systemd:
+    name: wg-quick@wg0
+    enabled: yes
+    masked: no
+
+- name: enable wg1 and ensure it is not masked
+  systemd:
+    name: wg-quick@wg1
+    enabled: yes
+    masked: no
+
+- name: install nginx and php
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - nginx
+    - php-fpm
+
+- name: configure default nginx file
+  template:
+    src: "default.nginx.j2"
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install certbot for https certificate
+  package:
+    name: python3-certbot-nginx
+    state: latest
+  when: "wireguard_nginx_port == '443'"
+
+- name: generate letsencrypt certificate
+  shell: certbot --nginx -n -d bonn{{ servernummer }}.kbu.freifunk.net --agree-tos --email freifunk-bonn@lists.kbu.freifunk.net --redirect
+  when: "wireguard_nginx_port == '443'"
+
+
+- name: copy wireguard.php to webserverroot
+  copy:
+    src: "var/www/html/wireguard.php"
+    dest: "/var/www/html/wireguard.php"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: delete index.nginx-debian.html in /var/www
+  file: 
+    path: /var/www/html/index.nginx-debian.html
+    state: absent
+
+
+
+- name: change /etc/sudoers to allow wireguard.php to use specific commands
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^www-data\s'
+    line: 'www-data ALL=(ALL) NOPASSWD: /usr/bin/wg, /sbin/ip, /sbin/brctl'
+
+- name: Add a cronjob to remove old sessions
+  cron: 
+    name: "check for old inactive wireguard session (last handshake older than 1 hour)" 
+    minute: 5 
+    job="wg set wg0 peer  "$(wg |  awk 'BEGIN {RS=""} /hour/ {print $2}'  | head -n 1)" remove"
+    state: present
+    user: root

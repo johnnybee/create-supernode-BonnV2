@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+#wir haengen nur die Bridge in bat0, da batman nur begrenzte Mengen an Interfaces vertraegt.
+/sbin/brctl addbr wireguard
+/sbin/ip link set dev wireguard up
+/usr/local/sbin/batctl if add  wireguard
+
+#Port isolation bridge
+ebtables --append FORWARD --logical-in wireguard --jump DROP
+

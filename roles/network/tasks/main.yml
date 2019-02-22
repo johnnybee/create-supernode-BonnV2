@@ -1,0 +1,52 @@
+---
+# tasks file for network
+
+- name: Update repositories on hosts
+  apt:
+    update_cache: yes
+
+
+- name: install packages 
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - iproute2
+    - uml-utilities
+
+- name: extend /etc/iproute2/rt_tables
+  lineinfile:
+    path: /etc/iproute2/rt_tables
+    state: present
+    regexp: '^90\s'
+    line: '90 freifunk'
+
+- name: configure /etc/network/interfaces.d/br-ffintern
+  template:
+    src: "br-ffintern.j2"
+    dest: /etc/network/interfaces.d/br-ffintern
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Remove "resolvconf" package
+  apt:
+    name: resolvconf
+    state: absent
+
+- name: configure /etc/network/interfaces
+  template:
+    src: "interfaces.j2"
+    dest: /etc/network/interfaces
+    owner: root
+    group: root
+    mode: 0644
+
+- name: change /etc/resolv.conf
+  copy:
+    src: "etc/resolv.conf"
+    dest: "/etc/resolv.conf"
+    owner: root
+    group: root
+    mode: 0644
+
