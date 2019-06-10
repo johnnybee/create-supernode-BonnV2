@@ -21,7 +21,7 @@
         - "::1"
 
     - role: batmancompile
-      batman_adv_number: 2019.0
+      batman_adv_number: 2019.2
 
     - role: network
     - role: bind
