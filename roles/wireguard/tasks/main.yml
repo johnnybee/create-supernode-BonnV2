@@ -158,7 +158,7 @@
   cron:
     name: "check for old wireguard session after reboot"
     special_time: reboot 
-    job="sleep 300 && /root/remove_wg0_keys.sh"
+    job: "sleep 300 && /root/remove_wg0_keys.sh"
     state: present
     user: root
 
