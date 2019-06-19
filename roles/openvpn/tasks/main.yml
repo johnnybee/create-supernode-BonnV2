@@ -47,3 +47,12 @@
     state: present
     user: root
 
+- name: install netselect for check_fastest_server
+  package:
+    name: netselect
+    state: latest
+
+- name: install host for check_fastest_server 
+  package:
+    name: host   
+    state: latest
