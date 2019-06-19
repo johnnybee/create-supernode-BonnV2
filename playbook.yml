@@ -35,7 +35,6 @@
       dhcpd_ipv4_blockend2: "10.70.255.255"
 
     - role: fastd
-      fbmxbone_ipv4_internal: <insert a free private ipv4-adress here for connecting to the backbone>
       fastd_privatekey: <insert your fastd-privatekey for the node connection>
 
     - role: wireguard
