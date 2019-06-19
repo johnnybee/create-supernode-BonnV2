@@ -133,3 +133,11 @@
     job="wg set wg0 peer  "$(wg |  awk 'BEGIN {RS=""} /hour/ {print $2}'  | head -n 1)" remove"
     state: present
     user: root
+
+- name: Add a cronjob to remove old key after reboot 
+  cron:
+    name: "check for old wireguard session after reboot"
+    special_time: reboot 
+    job="sleep 300 && /root/remove_wg0_keys.sh"
+    state: present
+    user: root
