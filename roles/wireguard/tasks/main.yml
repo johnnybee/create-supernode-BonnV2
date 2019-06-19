@@ -30,7 +30,12 @@
   package:
     name: ebtables
     state: latest
-
+    
+- name: install babeld for connection to node1
+  package:
+    name: babeld
+    state: latest
+    
 - name: copy wireguard files
   copy:
     src: "etc/wireguard/"
