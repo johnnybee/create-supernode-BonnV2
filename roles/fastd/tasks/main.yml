@@ -10,11 +10,6 @@
     name: fastd
     state: latest
 
-- name: install babeld for fbmxbone
-  package:
-    name: babeld
-    state: latest
-
 - name: copy fastd files
   copy:
     src: "etc/fastd/"
@@ -31,39 +26,12 @@
     group: root
     mode: 0644
 
-- name: configure fbmxbone/on-up
-  template:
-    src: "on-up.j2"
-    dest: "/etc/fastd/fbmxbone/on-up"
-    owner: root
-    group: root
-    mode: 0744
-
 - name: extend /etc/default/fastd
   lineinfile:
     path: /etc/default/fastd
     state: present
     regexp: '^AUTOSTART="none"\s'
     line: 'AUTOSTART="all"'
-
-- name: generate fastd key for fbmxbone
-  shell: fastd --generate-key
-  register: fastd_key_generated
-
-- template: src=secret.key.j2 dest=/etc/fastd/fbmxbone/secret.key owner=root group=root mode=0600
-  when: fastd_key_generated is changed
-- template: src=public.key.j2 dest=/etc/fastd/fbmxbone/public.key
-  when: fastd_key_generated is changed
-
-
-
-- name: configure fbmxbone/fastd.conf
-  template:
-    src: "fbmxbone.fastd.conf.j2"
-    dest: /etc/fastd/fbmxbone/fastd.conf
-    owner: root
-    group: root
-    mode: 0644
 
 - name: change executable byte for files
   file:
@@ -73,5 +41,4 @@
     mode: 0744
   with_items:
     - 'fastd-vpn/on-up'
-    - 'fbmxbone/on-up'
     - 'fastd-blacklist.sh'
