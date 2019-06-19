@@ -43,7 +43,7 @@
     name: "reconnect openvpn to (hopefully) connect to the fastest server"
     minute: 12
     hour: 3
-    job="/etc/openvpn/check_fastest_server"
+    job: "/etc/openvpn/check_fastest_server"
     state: present
     user: root
 
