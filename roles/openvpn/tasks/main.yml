@@ -36,6 +36,7 @@
   with_items:
     - 'up.sh'
     - 'down.sh'
+    - 'check_fastest_server'
 
 - name: Add a cronjob to reconnect to the hopefully fastest VPN server at night
   cron:
