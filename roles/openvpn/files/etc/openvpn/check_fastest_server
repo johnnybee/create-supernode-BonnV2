@@ -1,0 +1,15 @@
+#!/bin/bash
+        /etc/init.d/openvpn stop
+        sed '/remote/d' /etc/openvpn/piagermany.conf > /tmp/output.conf
+        LOCATION="de-"
+        server=$(wget -q  https://www.privateinternetaccess.com/pages/network/ -O - | grep -E -o '>[^.]+\.privateinternetaccess\.com<' | tr -d '[<>]' | grep "${LOCATION}") # Only check selected country
+        fhostname=$(netselect -s 1 -t 5 ${server} | awk '{print $2}')  # Pipes each of the servers into Netselect und selects fastest
+        #echo $fhostname
+        IPs=$(host $fhostname | awk '{print $4}')
+        #echo $IPs
+        FinalIP=$(netselect  -s 1 -t 5  $IPs | awk '{print $2}')
+        #echo ${FinalIP}
+        echo "remote $FinalIP 1198 # $fhostname" >> /tmp/output.conf
+        rm /etc/openvpn/piagermany.conf
+        mv /tmp/output.conf /etc/openvpn/piagermany.conf
+        /etc/init.d/openvpn start
