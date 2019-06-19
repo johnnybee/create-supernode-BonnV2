@@ -1,0 +1,10 @@
+[Interface]
+Address = 10.102.0.2{{ servernummer }}/24
+ListenPort = 50003
+PrivateKey = {{ wireguard_privatekey_node1 }}
+PostUp = /etc/wireguard/bonnV2_onup
+
+[Peer]
+PublicKey = 6deCJp76awZRh90PIFCfVgI/ZXscYqHgZ7SgyLWmOD8=
+AllowedIPs = 10.102.0.1/32
+Endpoint = 195.154.46.43:50003
