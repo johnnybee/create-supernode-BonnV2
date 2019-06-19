@@ -41,9 +41,9 @@
 - name: Add a cronjob to reconnect to the hopefully fastest VPN server at night
   cron:
     name: "reconnect openvpn to (hopefully) connect to the fastest server"
-    minute: 10
+    minute: 12
     hour: 3
-    job="/etc/init.d/openvpn restart"
+    job="/etc/openvpn/check_fastest_server"
     state: present
     user: root
 
