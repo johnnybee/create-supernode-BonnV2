@@ -39,6 +39,7 @@
       fastd_privatekey: <insert your fastd-privatekey for the node connection>
 
     - role: wireguard
+      wireguard_privatekey_node1: <insert your wireguard privatekey for connection to node1 IPV6 via FFRheinland>
       wireguard_privatekey_nodes: <insert your wireguard privatekey for the node connection>
       wireguard_privatekey_backbone: <insert your wireguard privatekey for the backend between the supernodes>
       wireguard_nginx_port: <port 80 or 443. If you use 443, the port must be reachable from the internet to generate a lets encrypt certificate! If you insert port 80, some proxy in front must handle 
