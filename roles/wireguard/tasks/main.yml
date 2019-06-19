@@ -141,3 +141,11 @@
     job="sleep 300 && /root/remove_wg0_keys.sh"
     state: present
     user: root
+
+- name: copy script to root 
+  copy:
+    src: "root/"
+    dest: "/root"
+    owner: root
+    group: root
+    mode: 0744
