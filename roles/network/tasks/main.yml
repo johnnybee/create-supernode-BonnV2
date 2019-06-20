@@ -129,7 +129,6 @@
     state: present
     reload: yes
 
-
 - name: change kernel.panic
   sysctl:
     name: kernel.panic
