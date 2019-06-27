@@ -129,6 +129,12 @@
     group: root
     mode: 0644
 
+- name: Ensure server tokens are off for nginx
+lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: server_tokens off;
+    insertafter: include /etc/nginx/sites-enabled/
+
 - name: install certbot for https certificate
   package:
     name: python3-certbot-nginx
