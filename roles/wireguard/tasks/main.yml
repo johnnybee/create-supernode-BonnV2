@@ -36,6 +36,11 @@
     name: babeld
     state: latest
     
+- name: install curl for the speedtest
+  package:
+    name: curl
+    state: latest
+
 - name: copy wireguard files
   copy:
     src: "etc/wireguard/"
@@ -145,7 +150,6 @@ lineinfile:
   shell: certbot --nginx -n -d bonn{{ servernummer }}.kbu.freifunk.net --agree-tos --email freifunk-bonn@lists.kbu.freifunk.net --redirect
   when: "wireguard_nginx_port == '443'"
 
-
 - name: copy wireguard.php to webserverroot
   copy:
     src: "var/www/html/wireguard.php"
@@ -154,12 +158,34 @@ lineinfile:
     group: root
     mode: 0644
 
+- name: copy speed.php to webserverroot
+  copy:
+    src: "var/www/html/speed.php"
+    dest: "/var/www/html/speed.php"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: copy checkspeed.sh to /var/www
+  copy:
+    src: "var/www/checkspeed.sh"
+    dest: "/var/www/checkspeed.sh"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add a cronjob to check vpn speed
+  cron:
+    name: "check every fourth hour the actual speed of the vpn connection"
+    hour: 4
+    job: "/var/www/checkspeed.sh"
+    state: present
+    user: root
+
 - name: delete index.nginx-debian.html in /var/www
   file: 
     path: /var/www/html/index.nginx-debian.html
     state: absent
-
-
 
 - name: change /etc/sudoers to allow wireguard.php to use specific commands
   lineinfile:
@@ -186,8 +212,8 @@ lineinfile:
 
 - name: copy script to root 
   copy:
-    src: "root/"
-    dest: "/root"
+    src: "opt/"
+    dest: "/opt"
     owner: root
     group: root
     mode: 0744
