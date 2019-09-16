@@ -1,6 +1,0 @@
----
-# handlers file for baseinstall
-
-- name: Restart SSH
-  service: name=ssh state=restarted
-
