@@ -21,10 +21,10 @@
         - "::1"
 
     - role: batmancompile
-      batman_adv_number: 2019.2
+      batman_adv_number: 2019.3
 
     - role: network
-    - role: bind
+    - role: pdns-recursor
     - role: dhcpd
       dhcpd_ipv4_max: "10.70.15.254"
       dhcpd_ipv6_max: "fdd3:5d18:b5dd:fc00:1fff:ffff:ffff:ffff"
