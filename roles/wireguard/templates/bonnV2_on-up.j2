@@ -8,5 +8,5 @@ babeld  -C 'redistribute ip 2a03:2260:11e::/48 ge 48 metric 128' \
 
 ip -6 rule add from 2a03:2260:11e::/48 lookup freifunk
 ip -6 rule add to 2a03:2260:11e::/48 lookup freifunk
-ip addr add 2a03:2260:11e:655::10/64 dev br-ffintern
-ip -6 r add 2a03:2260:11e:655::/64 dev br-ffintern table freifunk proto static
+ip addr add {{ network_ipv6_public }}10/64 dev br-ffintern
+ip -6 r add {{ network_ipv6_public }}/64 dev br-ffintern table freifunk proto static
