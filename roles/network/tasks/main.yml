@@ -129,6 +129,22 @@
     state: present
     reload: yes
 
+- name: change net.netfilter.nf_conntrack_tcp_timeout_established
+  sysctl:
+    name: net.netfilter.nf_conntrack_tcp_timeout_established
+    value: 86400
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: change net.netfilter.nf_conntrack_max
+  sysctl:
+    name: net.netfilter.nf_conntrack_max
+    value: 262140
+    sysctl_set: yes
+    state: present
+    reload: yes
+
 - name: change kernel.panic
   sysctl:
     name: kernel.panic
