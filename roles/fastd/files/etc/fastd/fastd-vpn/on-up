@@ -5,6 +5,7 @@
 batctl if add fastd-vpn
 batctl it 5000
 batctl gw_mode server 300MBit/300MBit
+batctl hp 60                    #Change hop_penalty
 batctl bl 1			#Bridge loop detection aktivieren
 
 /sbin/ip rule show | grep 'from 10.70.0.0/16 lookup freifunk'
