@@ -152,3 +152,11 @@
     sysctl_set: yes
     state: present
     reload: yes
+
+- name: change fs.file-max (maximum open files)
+  sysctl:
+    name: fs.file-max
+    value: 149219
+    sysctl_set: yes
+    state: present
+    reload: yes
