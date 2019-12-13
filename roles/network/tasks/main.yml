@@ -163,28 +163,28 @@
 
 - name: Extend noproc soft limit for normal users
   pam_limits:
-    domain: *
+    domain: "*"
     limit_type: soft
     limit_item: nproc
     value: 65535
 
 - name: Extend noproc hard limit for normal users
   pam_limits:
-    domain: *
+    domain: "*"
     limit_type: hard
     limit_item: nproc
     value: 65535
 
 - name: Extend nofile soft limit for normal users
   pam_limits:
-    domain: *
+    domain: "*"
     limit_type: soft
     limit_item: nofile
     value: 65535
 
 - name: Extend nofile hard limit for normal users
   pam_limits:
-    domain: *
+    domain: "*"
     limit_type: hard
     limit_item: nofile
     value: 65535
