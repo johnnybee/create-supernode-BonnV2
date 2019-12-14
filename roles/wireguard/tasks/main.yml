@@ -142,6 +142,12 @@ lineinfile:
 
 - name: install certbot for https certificate
   package:
+    name: certbot 
+    state: latest
+  when: "wireguard_nginx_port == '443'"
+
+- name: install python3-certbot-nginx for https certificate
+  package:
     name: python3-certbot-nginx
     state: latest
   when: "wireguard_nginx_port == '443'"
