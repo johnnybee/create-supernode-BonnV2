@@ -2,7 +2,11 @@
 if (isset($_POST['pubkey'])) {
         $pubkey=htmlentities($_POST['pubkey']);
 
-
+        # pubkey darf nur aus dem großen und kleinen Alphabet, Ziffern / und + bestehen und am Ende muss ein/zwei Gleichheitszeichen sein.
+        if (!preg_match('%^[a-zA-Z0-9/+]*={1,2}$%', $pubkey)) {
+                return;
+        }
+        
         // Erstmal eine freie IP raussuchen
         # Alle bereits vergegebenen IP-Adressen aus Wireguard auslesen
         exec("sudo /usr/bin/wg | grep 'allowed ips' | awk -v FS=' ' '{print $3}' | sed 's/\/32//'",$o);
