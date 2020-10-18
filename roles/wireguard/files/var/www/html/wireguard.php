@@ -8,7 +8,7 @@ if (isset($_POST['pubkey'])) {
         }
         
         // Erstmal eine freie IP raussuchen
-        # Alle bereits vergegebenen IP-Adressen aus Wireguard auslesen
+        // Alle bereits vergegebenen IP-Adressen aus Wireguard auslesen
         exec("sudo /usr/bin/wg | grep 'allowed ips' | awk -v FS=' ' '{print $3}' | sed 's/\/32//'",$o);
 
         $gefunden=false;
