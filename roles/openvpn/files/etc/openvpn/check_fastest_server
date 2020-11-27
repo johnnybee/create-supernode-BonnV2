@@ -2,7 +2,7 @@
         /etc/init.d/openvpn stop
         sed '/remote/d' /etc/openvpn/piagermany.conf > /tmp/output.conf
         LOCATION="de-"
-        server=$(wget -q  https://www.privateinternetaccess.com/pages/network/ -O - | grep -E -o '>[^.]+\.privateinternetaccess\.com<' | tr -d '[<>]' | grep "${LOCATION}") # Only check selected country
+        server=$(wget -q  https://www.privateinternetaccess.com/pages/network/ -O - | grep -E -o '>[^.]+\.privacy\.network<' | tr -d '[<>]' | grep "${LOCATION}") # Only check selected country
         fhostname=$(netselect -s 1 -t 5 ${server} | awk '{print $2}')  # Pipes each of the servers into Netselect und selects fastest
         #echo $fhostname
         IPs=$(host $fhostname | awk '{print $4}')
