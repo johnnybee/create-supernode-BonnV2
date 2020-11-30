@@ -203,8 +203,8 @@ lineinfile:
 
 - name: Add a cronjob to remove old sessions
   cron: 
-    name: "check for old inactive wireguard session (last handshake older than 1 hour)" 
-    minute: 5 
+    name: "check every 10 minutes for old inactive wireguard session (last handshake older than 1 hour)" 
+    minute: */10
     job: "wg set wg0 peer  \"$(wg |  awk 'BEGIN {RS=\"\"} /hour/ {print $2}'  | head -n 1)\" remove"
     state: present
     user: root
