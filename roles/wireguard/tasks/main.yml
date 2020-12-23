@@ -182,8 +182,8 @@ lineinfile:
 
 - name: Add a cronjob to check vpn speed
   cron:
-    name: "check every second hour the actual speed of the vpn connection"
-    hour: "*/2"
+    name: "check every hour the actual speed of the vpn connection"
+    hour: "*"
     minute: 10
     job: "/var/www/checkspeed.sh"
     state: present
