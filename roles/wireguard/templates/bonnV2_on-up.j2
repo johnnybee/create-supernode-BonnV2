@@ -1,3 +1,5 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
+# {{ ansible_managed }}
 /sbin/ip link add gre-bonn{{ servernummer }}-exit6 type gretap remote 10.102.0.1 local 10.102.0.2{{ servernummer }}
 /sbin/ip link set up dev gre-bonn{{ servernummer }}-exit6
 

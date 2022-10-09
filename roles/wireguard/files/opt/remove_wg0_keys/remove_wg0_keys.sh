@@ -1,3 +1,4 @@
+#!/bin/sh
 arr=()
 mapfile -t arr <<< $(wg show wg0 | grep peer | awk '{print $2}')
 for i in "${arr[@]}"

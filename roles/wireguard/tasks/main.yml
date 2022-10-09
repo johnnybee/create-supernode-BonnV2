@@ -17,27 +17,24 @@
       Pin: release a=unstable
       Pin-Priority: 90
 
-- name: Update repositories on hosts
-  apt:
-    update_cache: yes
-
 - name: install wireguard
-  package:
+  apt:
     name: wireguard
     state: latest
+    update_cache: yes
 
 - name: install ebtables
-  package:
+  apt:
     name: ebtables
     state: latest
-    
+
 - name: install babeld for connection to node1
-  package:
+  apt:
     name: babeld
     state: latest
-    
+
 - name: install curl for the speedtest
-  package:
+  apt:
     name: curl
     state: latest
 
@@ -135,14 +132,14 @@
     mode: 0644
 
 - name: Ensure server tokens are off for nginx
-lineinfile:
-    path: /etc/nginx/nginx.conf
-    line: server_tokens off;
-    insertafter: include /etc/nginx/sites-enabled/
+  lineinfile:
+      path: /etc/nginx/nginx.conf
+      line: server_tokens off;
+      insertafter: include /etc/nginx/sites-enabled/
 
 - name: install certbot for https certificate
   package:
-    name: certbot 
+    name: certbot
     state: latest
   when: "wireguard_nginx_port == '443'"
 
@@ -153,7 +150,7 @@ lineinfile:
   when: "wireguard_nginx_port == '443'"
 
 - name: generate letsencrypt certificate
-  shell: certbot --nginx -n -d bonn{{ servernummer }}.kbu.freifunk.net --agree-tos --email freifunk-bonn@lists.kbu.freifunk.net --redirect
+  shell: "certbot --nginx -n -d bonn{{ servernummer }}.kbu.freifunk.net --agree-tos --email freifunk-bonn@lists.kbu.freifunk.net --redirect"
   when: "wireguard_nginx_port == '443'"
 
 - name: copy wireguard.php to webserverroot
@@ -190,7 +187,7 @@ lineinfile:
     user: root
 
 - name: delete index.nginx-debian.html in /var/www
-  file: 
+  file:
     path: /var/www/html/index.nginx-debian.html
     state: absent
 
@@ -202,22 +199,22 @@ lineinfile:
     line: 'www-data ALL=(ALL) NOPASSWD: /usr/bin/wg, /sbin/ip, /sbin/brctl'
 
 - name: Add a cronjob to remove old sessions
-  cron: 
-    name: "check every 10 minutes for old inactive wireguard session (last handshake older than 1 hour)" 
-    minute: */10
+  cron:
+    name: "check every 10 minutes for old inactive wireguard session (last handshake older than 1 hour)"
+    minute: "*/10"
     job: "wg set wg0 peer  \"$(wg |  awk 'BEGIN {RS=\"\"} /hour/ {print $2}'  | head -n 1)\" remove"
     state: present
     user: root
 
-- name: Add a cronjob to remove old key after reboot 
+- name: Add a cronjob to remove old key after reboot
   cron:
     name: "check for old wireguard session after reboot"
-    special_time: reboot 
-    job: "sleep 300 && /root/remove_wg0_keys.sh"
+    special_time: reboot
+    job: "sleep 300 && /opt/remove_wg0_keys/remove_wg0_keys.sh"
     state: present
     user: root
 
-- name: copy script to root 
+- name: copy script to /opt
   copy:
     src: "opt/"
     dest: "/opt"
