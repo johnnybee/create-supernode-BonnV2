@@ -1,14 +1,10 @@
 ---
 # tasks file for openvpn
-
-- name: Update repositories on hosts
-  apt:
-    update_cache: yes
-
 - name: install openvpn
-  package:
+  apt:
     name: openvpn
     state: latest
+    update_cache: yes
 
 - name: copy openvpn files
   copy:
@@ -26,10 +22,9 @@
     group: root
     mode: 0644
 
-
 - name: change executable byte for files
   file:
-    path: '/etc/openvpn/{{ item }}'
+    path: "/etc/openvpn/{{ item }}"
     owner: root
     group: root
     mode: 0744
@@ -48,11 +43,11 @@
     user: root
 
 - name: install netselect for check_fastest_server
-  package:
+  apt:
     name: netselect
     state: latest
 
-- name: install host for check_fastest_server 
-  package:
-    name: host   
+- name: install host for check_fastest_server
+  apt:
+    name: host
     state: latest
