@@ -1,18 +1,12 @@
 ---
 # tasks file for network
-
-- name: Update repositories on hosts
+- name: install packages
   apt:
-    update_cache: yes
-
-
-- name: install packages 
-  package:
-    name: "{{ item }}"
+    name:
+      - iproute2
+      - uml-utilities
     state: latest
-  with_items:
-    - iproute2
-    - uml-utilities
+    update_cache: yes
 
 - name: extend /etc/iproute2/rt_tables
   lineinfile:
@@ -52,167 +46,39 @@
 
 - name: change net.ipv4.ip_forward
   sysctl:
-    name: net.ipv4.ip_forward
-    value: 1
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
     sysctl_set: yes
     state: present
     reload: yes
-
-- name: change net.ipv4.ip_no_pmtu_disc
-  sysctl:
-    name: net.ipv4.ip_no_pmtu_disc
-    value: 1
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.ipv4.route.flush
-  sysctl:
-    name: net.ipv4.route.flush
-    value: 1
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.ipv6.conf.all.forwarding
-  sysctl:
-    name: net.ipv6.conf.all.forwarding
-    value: 1
-    sysctl_set: yes
-    state: present
-    reload: yes
-- name: change net.ipv6.conf.all.autoconf
-  sysctl:
-    name: net.ipv6.conf.all.autoconf
-    value: 0
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.ipv6.conf.all.accept_ra
-  sysctl:
-    name: net.ipv6.conf.all.accept_ra
-    value: 0
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.core.rmem_max
-  sysctl:
-    name: net.core.rmem_max
-    value: 83886080
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.core.wmem_max
-  sysctl:
-    name: net.core.wmem_max
-    value: 83886080
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.core.rmem_default
-  sysctl:
-    name: net.core.rmem_default
-    value: 83886080
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.core.wmem_default
-  sysctl:
-    name: net.core.wmem_default
-    value: 83886080
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.netfilter.nf_conntrack_tcp_timeout_established
-  sysctl:
-    name: net.netfilter.nf_conntrack_tcp_timeout_established
-    value: 86400
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change net.netfilter.nf_conntrack_max
-  sysctl:
-    name: net.netfilter.nf_conntrack_max
-    value: 262140
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change kernel.panic
-  sysctl:
-    name: kernel.panic
-    value: 10
-    sysctl_set: yes
-    state: present
-    reload: yes
-
-- name: change fs.file-max (maximum open files)
-  sysctl:
-    name: fs.file-max
-    value: 149219
-    sysctl_set: yes
-    state: present
-    reload: yes
+  with_items:
+    - { name: 'net.ipv4.ip_forward', value: 1 }
+    - { name: 'net.ipv4.ip_no_pmtu_disc', value: 1 }
+    - { name: 'net.ipv4.route.flush', value: 1 }
+    - { name: 'net.ipv6.conf.all.forwarding', value: 1 }
+    - { name: 'net.ipv6.conf.all.autoconf', value: 0 }
+    - { name: 'net.ipv6.conf.all.accept_ra', value: 0 }
+    - { name: 'net.core.rmem_max', value: 83886080 }
+    - { name: 'net.core.wmem_max', value: 83886080 }
+    - { name: 'net.core.rmem_default', value: 83886080 }
+    - { name: 'net.core.wmem_default', value: 83886080 }
+    - { name: 'net.netfilter.nf_conntrack_tcp_timeout_established', value: 86400 }
+    - { name: 'net.netfilter.nf_conntrack_max', value: 262140 }
+    - { name: 'kernel.panic', value: 10 }
+    - { name: 'fs.file-max', value: 149219 }
 
 - name: Extend noproc soft limit for normal users
   pam_limits:
-    domain: "*"
-    limit_type: soft
-    limit_item: nproc
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
     value: 65535
-
-- name: Extend noproc hard limit for normal users
-  pam_limits:
-    domain: "*"
-    limit_type: hard
-    limit_item: nproc
-    value: 65535
-
-- name: Extend nofile soft limit for normal users
-  pam_limits:
-    domain: "*"
-    limit_type: soft
-    limit_item: nofile
-    value: 65535
-
-- name: Extend nofile hard limit for normal users
-  pam_limits:
-    domain: "*"
-    limit_type: hard
-    limit_item: nofile
-    value: 65535
-
-- name: Extend nproc soft limit for root
-  pam_limits:
-    domain: root
-    limit_type: soft
-    limit_item: nproc
-    value: 65535
-
-- name: Extend nproc hard limit for root
-  pam_limits:
-    domain: root
-    limit_type: hard
-    limit_item: nproc
-    value: 65535
-
-- name: Extend nofile soft limit for root
-  pam_limits:
-    domain: root
-    limit_type: soft
-    limit_item: nofile
-    value: 65535
-
-- name: Extend nofile hard limit for root
-  pam_limits:
-    domain: root
-    limit_type: hard
-    limit_item: nofile
-    value: 65535
+  with_items:
+    - { domain: '*', limit_type: 'soft', limit_item: 'nproc' }
+    - { domain: '*', limit_type: 'hard', limit_item: 'nproc' }
+    - { domain: '*', limit_type: 'soft', limit_item: 'nofile' }
+    - { domain: '*', limit_type: 'hard', limit_item: 'nofile' }
+    - { domain: 'root', limit_type: 'soft', limit_item: 'nproc' }
+    - { domain: 'root', limit_type: 'hard', limit_item: 'nproc' }
+    - { domain: 'root', limit_type: 'soft', limit_item: 'nofile' }
+    - { domain: 'root', limit_type: 'hard', limit_item: 'nofile' }
