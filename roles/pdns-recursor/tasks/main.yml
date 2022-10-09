@@ -1,15 +1,10 @@
 ---
 # tasks file for bind
-
-- name: Update repositories on hosts
-  apt:
-    update_cache: yes
-
 - name: install PDNS Recursor
-  package:
+  apt:
     name: "pdns-recursor"
     state: latest
-
+    update_cache: yes
 
 - name: copy /etc/powerdns/filter-aaaa.lua
   copy:
@@ -18,7 +13,6 @@
     owner: root
     group: root
     mode: 0644
-
 
 - name: configure /etc/powerdns/recursor.conf
   template:
