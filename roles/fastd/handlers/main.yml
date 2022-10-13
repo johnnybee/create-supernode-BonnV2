@@ -2,5 +2,6 @@
 # handlers file for baseinstall
 
 - name: Restart fastd
-  service: name=fastd state=restarted
-
+  systemd:
+    name: fastd
+    state: restarted

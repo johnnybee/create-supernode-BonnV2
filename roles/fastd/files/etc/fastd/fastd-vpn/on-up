@@ -1,5 +1,4 @@
 #!/bin/sh
-
 /sbin/ip link set dev fastd-vpn up
 
 batctl if add fastd-vpn
@@ -13,6 +12,4 @@ if [ $? -eq 1 ]; then
   /sbin/ip rule add from 10.70.0.0/16 table freifunk
 fi
 /sbin/ip route add 10.70.0.0/16 dev br-ffintern table freifunk
-/sbin/ip route flush cache
- 
 /sbin/ip route flush cache

@@ -1,14 +1,10 @@
 ---
 # tasks file for fastd role
-
-- name: Update repositories on hosts
+- name: install fastd
   apt:
-    update_cache: yes
-
-- name: install fastd 
-  package:
     name: fastd
     state: latest
+    update_cache: yes
 
 - name: copy fastd files
   copy:
@@ -18,7 +14,7 @@
     group: root
     mode: 0644
 
-- name: configure fastd-vpn/fastd.conf 
+- name: configure fastd-vpn/fastd.conf
   template:
     src: "fastd-vpn.fastd.conf.j2"
     dest: /etc/fastd/fastd-vpn/fastd.conf

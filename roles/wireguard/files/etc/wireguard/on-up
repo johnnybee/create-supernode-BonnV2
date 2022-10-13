@@ -1,6 +1,4 @@
 #!/bin/sh
-
-
 #wir haengen nur die Bridge in bat0, da batman nur begrenzte Mengen an Interfaces vertraegt.
 /sbin/brctl addbr wireguard
 /sbin/ip link set dev wireguard up

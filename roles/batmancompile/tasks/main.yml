@@ -1,32 +1,27 @@
 ---
 # tasks file for openvpn
-
-- name: Update repositories on hosts
-  apt:
-    update_cache: yes
-
 - name: install packages to compile batman-adv
-  package:
-    name: "{{ item }}"
+  apt:
+    name:
+      - linux-headers-amd64
+      - build-essential
+      - cmake
+      - doxygen
+      - bison
+      - libcap-dev
+      - libsodium-dev
+      - libjson-c-dev
+      - bridge-utils
+      - xz-utils
+      - wget
+      - pkg-config
+      - libnl-genl-3-dev
+      - libnl-3-200
+      - libnl-3-dev
+      - dkms
+      - linux-headers-{{ ansible_kernel }}
+    update_cache: yes
     state: latest
-  with_items:
-    - linux-headers-amd64
-    - build-essential 
-    - cmake 
-    - doxygen 
-    - bison 
-    - libcap-dev 
-    - libsodium-dev 
-    - libjson-c-dev 
-    - bridge-utils 
-    - xz-utils 
-    - wget 
-    - pkg-config 
-    - libnl-genl-3-dev 
-    - libnl-3-200  
-    - libnl-3-dev
-    - dkms
-    - linux-headers-{{ ansible_kernel }}
 
 - name: Downloading batman-adv sources
   get_url:
@@ -66,14 +61,16 @@
   when: batman_adv_source_unpack.changed
   register: batman_adv_dkms
 
-#- name: Installing Batman-adv 
+#- name: Installing Batman-adv
 #  command: "dkms add -m batman-adv -v {{ batman_adv_number }} && dkms build -m batman-adv -v {{ batman_adv_number }} && dkms install -m batman-adv -v {{ batman_adv_number }}"
 #  args:
 ##    chdir: "/usr/src/batman-adv-{{ batman_adv_number }}"
 #  when: batman_adv_dkms.changed
 
 - name: Installing Batman-adv
-  command: "{{ item }} chdir=/usr/src/batman-adv-{{ batman_adv_number }}/"
+  command: "{{ item }}"
+  args:
+    chdir: "/usr/src/batman-adv-{{ batman_adv_number }}/"
   with_items:
     - dkms add -m batman-adv -v {{ batman_adv_number }}
     - dkms build -m batman-adv -v {{ batman_adv_number }}
@@ -81,9 +78,11 @@
   when: batman_adv_dkms.changed
 
 - name: Installing Batctl
-  command: "{{ item }} chdir=/usr/src/batctl-{{ batman_adv_number }}/"
+  command: "{{ item }}"
+  args:
+    chdir: "/usr/src/batctl-{{ batman_adv_number }}/"
   with_items:
     - /usr/bin/make
-    - /usr/bin/make install    
+    - /usr/bin/make install
   when: batctl_source.changed
 

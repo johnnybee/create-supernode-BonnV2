@@ -1,5 +1,6 @@
+#jinja2: lstrip_blocks: "True", trim_blocks: "True"
 #!/bin/sh
-
+# {{ ansible_managed }}
 
 #wir haengen nur die Bridge in bat0, da batman nur begrenzte Mengen an Interfaces vertraegt.
 /sbin/brctl addbr wireguard-bb
